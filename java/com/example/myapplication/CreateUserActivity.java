@@ -88,34 +88,19 @@ public class CreateUserActivity extends AppCompatActivity {
 
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
+        int y = calendar.get(Calendar.YEAR);
+        int m = calendar.get(Calendar.MONTH);
+        int d = calendar.get(Calendar.DAY_OF_MONTH);
 
+        DatePickerDialog dpd = new DatePickerDialog(this, (view, year, month, day) -> {
+            String dob = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
+            etDob.setText(dob);
 
-        calendar.add(Calendar.YEAR, -18);
-        int maxYear = calendar.get(Calendar.YEAR);
-        int maxMonth = calendar.get(Calendar.MONTH);
-        int maxDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dpd = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-            String dob = String.format(Locale.getDefault(), "%02d/%02d/%04d", dayOfMonth, month + 1, year);
-            int calculatedAge = calculateAge(year, month, dayOfMonth);
-
-            if (calculatedAge < 18) {
-                Snackbar.make(etDob, "You must be at least 18 years old", Snackbar.LENGTH_LONG).show();
-                etDob.setText("");
-                etAge.setText("");
-            } else {
-                etDob.setText(dob);
-                etAge.setText(String.valueOf(calculatedAge));
-            }
-
-        }, maxYear, maxMonth, maxDay);
-
-
-        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-
+            int age = calculateAge(year, month, day);
+            etAge.setText(String.valueOf(age));
+        }, y, m, d);
         dpd.show();
     }
-
 
     private int calculateAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();
