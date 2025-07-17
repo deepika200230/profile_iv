@@ -1,65 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#E6E2E2"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:layout_gravity="center"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#E6E2E2">
+
     <LinearLayout
-        android:id="@+id/card"
         android:orientation="vertical"
+        android:layout_margin="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_border"
-        android:padding="24dp"
-        android:elevation="6dp"
-       android:layout_centerInParent="true"
-        android:layout_gravity="center">
+        android:layout_height="wrap_content">
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfile"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:src="@drawable/person"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@android:color/darker_gray"
-            android:layout_gravity="center" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/card"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="clip_vertical"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:layout_marginTop="16dp" />
+            android:background="@drawable/rounded_border"
+            android:padding="24dp"
+            android:elevation="6dp">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/person"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@android:color/darker_gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp" />
 
-        <TextView
-            android:id="@+id/tvAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:layout_marginTop="8dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
 
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:text="Name"
+                    android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:id="@+id/tvDob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:layout_marginTop="8dp" />
+                <TextView
+                    android:id="@+id/tvAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:text="Age"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvDob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:text="DOB" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</RelativeLayout>
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:text="All Users"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="25dp"/>
+    </LinearLayout>
+</ScrollView>

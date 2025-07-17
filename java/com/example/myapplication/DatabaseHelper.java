@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "UserDB";
     public static final String TABLE_NAME = "users";
@@ -79,5 +82,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", ImgPath: " + cursor.getString(5));
         }
     }
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users", null);
+        while (cursor.moveToNext()) {
+            users.add(extractUser(cursor));
+        }
+        cursor.close();
+        return users;
+    }
+    public boolean deleteUser(String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "userId=?", new String[]{userId}) > 0;
+    }
+
 
 }

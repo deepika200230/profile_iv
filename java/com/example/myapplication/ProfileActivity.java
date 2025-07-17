@@ -11,41 +11,47 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 
-public class ProfileActivity extends AppCompatActivity {
+import java.util.List;public class ProfileActivity extends AppCompatActivity {
 
     TextView tvName, tvAge, tvDob;
     ImageView imgView;
+    RecyclerView recyclerUsers;
     DatabaseHelper db;
-
-    private void setBoldLabelText(TextView textView, String label, String value) {
-        SpannableString styledText = new SpannableString(label + value);
-        styledText.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(styledText);
-    }
+    String currentUserId;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.grey));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.  grey));
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+
         tvName = findViewById(R.id.tvName);
         tvAge = findViewById(R.id.tvAge);
         tvDob = findViewById(R.id.tvDob);
         imgView = findViewById(R.id.imgProfile);
+        recyclerUsers = findViewById(R.id.recyclerUsers);
 
         db = new DatabaseHelper(this);
-        String userId = getIntent().getStringExtra("user");
-        User user = db.getUserById(userId);
-        db.printAllUsers();
+        currentUserId = getIntent().getStringExtra("user");
+        currentUser = db.getUserById(currentUserId);
 
+        loadProfile(currentUser);
+        loadAllUsers();
+    }
+
+    private void loadProfile(User user) {
         if (user != null) {
             setBoldLabelText(tvName, "Name: ", user.name);
             setBoldLabelText(tvAge, "Age: ", String.valueOf(user.age));
@@ -57,6 +63,28 @@ public class ProfileActivity extends AppCompatActivity {
                         .placeholder(R.drawable.person)
                         .into(imgView);
             }
+        } else {
+            tvName.setText("User Deleted");
+            tvAge.setText("");
+            tvDob.setText("");
+            imgView.setImageResource(R.drawable.person);
         }
+    }
+
+    private void loadAllUsers() {
+        List<User> allUsers = db.getAllUsers();
+        recyclerUsers.setLayoutManager(new LinearLayoutManager(this));
+        recyclerUsers.setAdapter(new UserAdapter(this, allUsers, db, deletedUserId -> {
+            if (deletedUserId.equals(currentUserId)) {
+                currentUser = null;
+                loadProfile(null); // Clear profile if current is deleted
+            }
+        }));
+    }
+
+    private void setBoldLabelText(TextView textView, String label, String value) {
+        SpannableString styledText = new SpannableString(label + value);
+        styledText.setSpan(new StyleSpan(Typeface.BOLD), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(styledText);
     }
 }

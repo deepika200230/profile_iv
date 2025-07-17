@@ -70,9 +70,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date of Birth (dd/MM/yyyy)"
-        android:inputType="date"
         android:layout_below="@id/etAge"
         android:layout_marginTop="12dp"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
         android:background="@drawable/edittext_background" />
 
 
